@@ -1,0 +1,10 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block title %}
+  Page d'inscription
+  {{ parent() }}
+{% endblock %}
+
+{% block fos_user_content %}
+  {% include "@FOSUser/Registration/register_content.html.twig" %}
+{% endblock fos_user_content %}

@@ -1,0 +1,181 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page d'accueil -
+    {{ parent() }}
+{% endblock %}
+{% block bodyId %}
+<body id="homepage">
+{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <div class="construction-image">
+
+            <p class=" bienvenue color-white">Bienvenue sur l'application participative</p>
+            <h1>Nos Amis les Oiseaux</h1>
+
+            <div class="row ">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <p class="col-lg-2 justify-content-center" style="display: block; margin : auto;"><a
+                                href="{{ path('add_observation') }}" class="btn btn-primary btn-center">Faire une
+                            observation</a></p>
+                {% else %}
+                    <p class="col-lg-2 justify-content-center" style="display: block; margin : auto;"><a
+                                href="{{ path('landing') }}" class="btn btn-primary btn-center">Devenir
+                            Observ'Acteur</a></p>
+                {% endif %}
+            </div>
+            <div>
+                {{ include('::search.html.twig') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid body-background">
+        <div class="construction">
+            <h2 class="color-green">Qui sommes nous</h2>
+            <div class="row justify-content-center">
+                <p>
+                    Nos amis les oiseaux est une association regroupant des passionnés d'ornithologie.<br>
+                    À ce jour, nous sommes plus de 171 adhérents dont 2 naturalistes qui contribuent chaque jour à la
+                    faire vivre.<br>
+                    Notre site participatif a pour objectif de collecter des informations qui permettront d'étudier les
+                    effets du climat,
+                    de l'urbanisation et de l'agriculture sur la biodiversité.<br> Grâce à vous, adhérents ou simples
+                    contributeurs,<br>
+                    nous souhaitons recueillir un maximum d’observations. Ensemble préservons la biodiversité et
+                    contribuons à la protection des oiseaux.
+                </p>
+            </div>
+            <div class="row">
+                <br>
+            </div>
+            <div class="row">
+                <p class="col-lg-2 justify-content-center" style="display: block; margin : auto;"><a
+                            href="{{ path('association') }}" class="btn btn-primary btn-center">Notre Association</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid green-background">
+        <div class="construction">
+
+            <h2 class="color-white">Dernières Actualités</h2>
+            <div class="row news">
+                {% set index = 0 %}
+                {% for n in news %}
+                    <div class="col-sm">
+                        <div class="card-group d-flex justify-content-center">
+                            <div class="card" style="max-width:380px; min-width:  280px;">
+                                <div class="card-img-top">
+                                    {% if n.picture %}
+                                        <img class="card-img-top w-100 d-block"
+                                             src="{{ asset('uploads/') }}{{ n.picture.name }}" alt="{{ n.picture.alt }}">
+                                    {% else %}
+                                        <img class="card-img-top w-100 d-block" src="{{ asset('img/default.gif') }}"
+                                             alt="default">
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="color-green col-md-5 col-sm-5 col-5 font-size-14"> {{ n.title| truncate(25, true, '...') }}</div>
+                                    <div class="col-md-1 col-sm-1 col-1"><a href="{{ path('article', { 'id': n.id }) }}"
+                                                                            class="btn btn-primary btn-circle btn-lg"><i
+                                                    class="material-icons ">add</i></a></div>
+                                    <div class="margin-date color-green col-md-4 col-sm-4 col-4 font-size-12"> {{ n.newsDate|date("d/m/Y") }}</div>
+                                </div>
+                                <div class="card-body" style="margin: 0 14px;">
+                                    <span class="card-text">{{ n.post|truncate(150, true, '...')|raw }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% set index = index + 1 %}
+                {% endfor %}
+            </div>
+
+            <br>
+            <div class="row">
+                <p class="col-lg-2" style="display: block; margin : auto;"><a href="{{ path('news', {'page': 1}) }}"
+                                                                              class="btn btn-primary btn-center">Plus
+                        d'articles</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid white-background">
+        <div class="construction">
+            <h2 class="color-green">Dernières Observations</h2>
+            <div class="row observations">
+                {% set index = 0 %}
+                {% for o in observations %}
+                    <div class="col-sm">
+                        <div class="card-group d-flex justify-content-center">
+                            <div class="card" style="max-width: 380px; min-width:280px;">
+                                <div class="card-img-top">
+                                    {% if obsPicture[ index ] %}
+                                        <img class="card-img-top w-100 d-block"
+                                             src="{{ asset('img/') }}{{ obsPicture[ index ].name }}" alt="{{ obsPicture[ index ].alt }}">
+                                    {% else %}
+                                        <img class="card-img-top w-100 d-block" src="{{ asset('img/default.gif') }}"
+                                             alt="default">
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="color-green col-md-5 col-sm-5 col-5 font-size-14">{{o.aves.nameVern| truncate(25, true, '...') }}</div>
+                                    <div class="col-md-1 col-sm-1 col-1"><a
+                                                href="{{ path('observation', { 'id': o.id }) }}"
+                                                class="btn btn-primary btn-circle btn-lg"><i
+                                                    class="material-icons ">add</i></a></div>
+                                    <div class="margin-date color-green col-md-4 col-sm-4 col-4 font-size-12"> {{ o.observationDate|date("d/m/Y") }}</div>
+                                </div>
+                                <div class="color-green font-size-14"> par : {{ o.users.username }}</div>
+                                <div class="card-body">
+                                    <p class="card-text">{{o.observationComment| truncate(150, true, '...') }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {% set index = index + 1 %}
+                {% endfor %}
+            </div>
+            <br>
+            <h2 class="color-green" style="margin-top: 100px">Inscrivez vous à notre newsletter</h2>
+            <div class="row justify-content-center">
+                <form class="form-inline" action="{{ path('subscribe-newsletters') }}" method="post">
+                    <input class="form-control col-8" type="text" placeholder="email" name="email"><br>
+                    <button class="btn btn-outline-primary col-4" type="submit">S'inscrire</button>
+                </form>
+            </div>
+            <br>
+            <h2 class="color-green">Notre présence sur les réseaux sociaux</h2>
+            <div class="icon-mobil">
+                <a href="#"><img src="{{ asset('img/facebook-logo-vert-mobil.png') }}" alt="icon">
+                </a>
+                <a href="#"><img src="{{ asset('img/instagram-vert-mobil.png') }}" alt="icon"></a>
+            </div>
+            <div class="icon-desktop">
+                <a href="#"><img src="{{ asset('img/facebook-logo-vert.png') }}" alt="icon">
+                </a>
+                <a href="#"><img src="{{ asset('img/instagram-vert.png') }}" alt="icon"></a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $("#termsearch").keyup(function () {
+                // Recovering data from the database whit AJAX
+                let termSearch = $(this).val();
+                termSearch = $.trim(termSearch);
+                callAjax('search', termSearch);
+            })
+        });
+    </script>
+{% endblock %}

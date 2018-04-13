@@ -1,0 +1,75 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+
+    <h2 class="admin-title-user">Liste des utilisateurs du site</h2><br>
+    <div>
+        <p>Le nombre d'utilisateur actuel est de: {{ users|length }}</p>
+    </div>
+
+        <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Profession</th>
+                <th scope="col">Naturaliste</th>
+                <th scope="col">Carte professionnelle</th>
+                <th scope="col">Rôle</th>
+                <th scope="col">Voir</th>
+                <th scope="col">Modifier</th>
+            </tr>
+        </thead>
+        <tbody >
+        {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.profession }}</td>
+                <td>{% if user.isnaturalist %}Oui{% else %}Non{% endif %}</td>
+                <td>
+                    {% if user.picture %}
+                        {{ user.picture.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% for role in user.roles %}
+
+                        {% if 'ROLE_ADMIN' in role  %}
+                            {% if loop.first %}
+                            <button type="button" class="btn btn-dark">Administrateur</button>
+                            {% endif %}
+                            {% elseif 'ROLE_NATURALIST' in role %}
+                                {% if loop.first %}
+                                    <button type="button" class="btn btn-success">Naturaliste</button>
+                                {% endif %}
+                        {% elseif 'ROLE_PARTICULAR' in role %}
+                            {% if loop.first %}
+                                <button type="button" class="btn btn-warning">Particulier</button>
+                            {% endif %}
+                        {% elseif 'AUCUN' in role %}
+                            {% if loop.first %}
+                                <button type="button" class="btn btn-light">Aucun</button>
+                                {% endif %}
+                         {% endif %}
+
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_show', { 'id': user.id }) }}" class="btn btn-outline-primary circle view" title="Voir">
+                        <i class="material-icons">visibility</i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('admin_edit', { 'id': user.id }) }}" class="btn btn-outline-primary circle edit" title="Modifier">
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

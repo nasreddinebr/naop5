@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <style>
+        .flex-container {
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 250px;
+        }
+
+        .flex-item {
+            width: 209px;
+            height: 128px;
+        }
+
+        .flex-item:first-child {
+            margin-right: auto;
+        }
+
+       #message_contact, #coordonnée_contact{
+            padding: 20px;
+            text-align: justify;
+        }
+
+       #coordonnée_contact {
+           font-style: italic;
+       }
+
+        h1 {
+            text-align: center;
+            text-decoration: underline overline #FF3028;
+        }
+        img {
+            width: 209px;
+            height: 128px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="flex-container">
+    <div class="flex-item">
+        <img src="https://naop5.webartdevs.fr/img/logo_nao.png" alt="logo_nao">
+
+    </div>
+</div>
+
+<h1>Un utilisateur vous a laissé un Message.</h1>
+<h3>Coordonnées de l'utilisateur</h3>
+<div id="coordonnée_contact">
+    <p><strong>Nom :</strong> {{ contact.name }}</p>
+    <p><strong>Prénom :</strong> {{ contact.firstname }}</p>
+    <p><strong>E-mail :</strong> {{ contact.email }}</p>
+    <p><strong>Sujet :</strong> {{ contact.subject }}</p>
+</div>
+<div id="message_contact">
+    <p><strong>Message :</strong> <br>
+        {{ contact.message }}
+    </p>
+</div>
+
+
+</body>
+
+</html>

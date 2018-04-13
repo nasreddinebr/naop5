@@ -1,0 +1,112 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page Actualités - {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+    <body id="news">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid white-background">
+        <div class="construction">
+
+            <h2 class="color-green">Actualités</h2>
+
+            <div class="row news">
+                {% set num = 0 %}
+                {% set index = 0 %}
+
+                {% for n in news %}
+
+                    {% if num == 3 %}
+                        </div>
+                        <div class="row news">
+                            <p> <br> </p>
+                        </div>
+                        <div class="row news">
+                        {% set num = 1 %}
+                    {% else %}
+                        {% set num = num + 1 %}
+                    {% endif %}
+                        <div class="col-sm">
+                            <div class="card-group d-flex justify-content-center">
+                                <div class="card" style="max-width: 380px; min-width: 280px;">
+                                    <div class="card-img-top">
+                                    {% if n.picture is not null %}
+                                        <img class="card-img-top w-100 d-block" src="{{ asset('uploads/' ~ n.picture.name) }}" alt="{{ n.picture.alt }}" >
+                                    {% else %}
+                                        <img class="card-img-top w-100 d-block" src="{{ asset('img/default.gif')}}" alt="default">
+                                    {% endif %}
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="color-green col-5 font-size-14"> {{ n.title| truncate(25, true, '...') }}</div>
+                                        <div class="col-1"> <a href="{{ path('article', { 'id': n.id }) }}" class="btn btn-primary btn-circle btn-lg"><i class="material-icons ">add</i></a></div>
+                                        <div class="margin-date color-green col-4 font-size-12"> {{ n.newsDate|date("d/m/Y") }}</div>
+                                    </div>
+                                    <div class="card-body" style="margin: 14px;">
+                                        <span class="card-text">{{ n.post|truncate(150, true, '...')|raw }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% set index = index + 1 %}
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <p><br></p>
+            </div>
+
+            <nav aria-label="Page navigation">
+               <ul class="pagination justify-content-start">
+                   {% if not (page == 1) %}
+                       <li class="page-item">
+                           <a class="page-link" href="{{ path('news', {'page': page - 1}) }}"
+                              tabindex="-1"> < </a>
+                       </li>
+                   {% endif %}
+
+                   {% if pageTotal >= 1 and page <= pageTotal %}
+                       <li class=" active1 page-item">
+                           <a class="page-link" href="{{ path('news',{'page': page}) }}">
+                               {{ page }}</a>
+                       </li>
+
+                   {% endif %}
+
+                   {% if pageTotal >= 2 and (page +1) <= pageTotal%}
+                       <li class="page-item">
+                           <a class="page-link" href="{{ path('news',{'page': page + 1}) }}">
+                               {{ page + 1 }}</a>
+                       </li>
+                   {% endif %}
+
+                   {% if pageTotal >= 3 and (page + 2) <= pageTotal%}
+                       <li class="page-item">
+                           <a class="page-link" href="{{ path('news',{'page': page + 2}) }}">
+                               {{ page + 2 }}</a>
+                       </li>
+                   {% endif %}
+
+                   {% if pageTotal > 3 and (page + 2) < pageTotal%}
+                       <li class=" page-item">
+                           <a class="page-link" href="{{ path('news',{'page': page + 3}) }}">
+                               > </a>
+                       </li>
+                   {% endif %}
+               </ul>
+            </nav>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+

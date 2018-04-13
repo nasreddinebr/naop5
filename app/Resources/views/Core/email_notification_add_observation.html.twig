@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <style>
+        .flex-container {
+            display: -webkit-flex;
+            display: flex;
+            width: 100%;
+            height: 250px;
+        }
+
+        .flex-item {
+            width: 209px;
+            height: 128px;
+        }
+
+        .flex-item:first-child {
+            margin-right: auto;
+        }
+
+        p {
+            padding: 20px;
+            text-align: justify;
+        }
+
+        h3 {
+            text-align: center;
+        }
+        img {
+            width: 209px;
+            height: 128px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="flex-container">
+    <div class="flex-item">
+        <img src="https://naop5.webartdevs.fr/img/logo_nao.png" alt="logo_nao">
+    </div>
+</div>
+
+<h3>Une observation est en attente d’approbation.</h3>
+<p>Cher {{ natuser.username }}</p>
+<p>
+    L'utilisateur {{ username }} à ajouté une observation concernant l'espèce {{ birdname }},
+    veuillez vous connecter sur votre espace personnel pour consulter
+    cette dernière, afin de la valider, la modifier ou la rejeter.
+</p>
+<p>cordialement.</p>
+<p>Associaition : Nos Amis les Oiseaux.</p>
+
+</body>
+
+</html>

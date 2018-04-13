@@ -1,0 +1,122 @@
+<div class="container-fluid">
+    {{ form_start(form,{'action': path('observationEdit', {'id':picture.observation.id}), 'method': 'POST'}) }}
+        {# Les erreurs générales du formulaire. #}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-1" id="closeEdit" style="font-size: xx-large;">
+                <a href="#" data-dismiss="modal" style="color: #F27830" title="Retour">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </div>
+        </div>
+        <div class="row" style="padding: 3px">
+            <div class="col-12 col-md-7" style="padding: 0;padding-top: 10px">
+                <div class="card">
+                    <div class="input-group" style="z-index: 10">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary" id="fileUploadCamera" title="Upload une image">
+                                <i class="material-icons">camera_alt</i>
+                                {{ form_widget(form.file, {'attr': {'style': 'display: none;'}}) }}
+                            </span>
+                        </label>
+                        {% if picture.name %}
+                            <img class="card-img-top w-100 d-block" src="{{ asset('img/')}}{{ picture.name }}" alt="{{ picture.alt }}">
+                        {% else %}
+                            <img class="card-img-top w-100 d-block" src="{{ asset('img/default.gif')}}" alt="default">
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12 col-md-5" style="padding-left: 3px;">
+                <div id="zoneSearch" class="form-group">
+                    {{ form_label(form.observation.aves.tlName, "Nom de l'oiseau :", {'label_attr': { 'class': 'control-label' }}) }}
+                    {{ form_errors(form.observation.aves.tlName) }}
+                    {{ form_widget(form.observation.aves.tlName, {'id': 'termsearch', 'attr': {
+                        'class': 'form-control',
+                        'readonly': true
+
+                    }}) }}
+                </div>
+                <div id="result">
+                    <ul class="list-group" id="listResult"></ul>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.observation.observationDate, "Date de l'observation :", {'label_attr': { 'class': 'control-label' }}) }}
+                    <br>
+                    {{ form_errors(form.observation.observationDate) }}
+                    {{ form_widget(form.observation.observationDate.day, {'attr': {
+                        'class': 'custom-select',
+                        'readonly': true
+                    }}) }}
+                    {{ form_widget(form.observation.observationDate.month, {'attr': {
+                        'class': 'custom-select',
+                        'readonly': true
+                    }}) }}
+                    {{ form_widget(form.observation.observationDate.year, {'attr': {
+                        'class': 'custom-select',
+                        'readonly': true
+                    }}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.observation.latitude, "Latitude :", {'label_attr': { 'class': 'control-label' }}) }}
+                    {{ form_errors(form.observation.latitude) }}
+                    {{ form_widget(form.observation.latitude, {'id': 'inputlat','attr': {
+                        'class': 'form-control',
+                        'readonly': true
+                    }}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.observation.longitude, "Longitude :", {'label_attr': { 'class': 'control-label' }}) }}
+                    {{ form_errors(form.observation.longitude) }}
+                    {{ form_widget(form.observation.longitude, {'id': 'inputlng', 'attr': {
+                        'class': 'form-control',
+                        'readonly': true
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    {{ form_label(form.observation.observationComment, "Commentaires :", {'label_attr': { 'class': 'control-label' }}) }}
+                    {{ form_errors(form.observation.observationComment) }}
+                    {{ form_widget(form.observation.observationComment, {'attr': {
+                        'class': 'form-control',
+                        'rows': '10',
+                        'readonly': true
+                    }}) }}
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-end">
+            <div class="col-1">
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary" id="editValidation" title="Valider">
+                            <i class="material-icons">done</i>
+                            {{ form_widget(form.valider, {'id':'btnvalider', 'attr': {
+                                'class': 'btn btn-primary btn-lg',
+                                'style': 'display: none;'
+                            }}) }}
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-1">
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary" id="deletObservation" title="Supprimer">
+                            <a href="{{ path('observationRemove', {'id':picture.observation.id}) }}" style="color: #F27830">
+                                <i class="material-icons">delete_forever</i>
+                            </a>
+
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+</div>
+

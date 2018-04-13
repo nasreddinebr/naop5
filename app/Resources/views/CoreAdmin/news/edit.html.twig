@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+    <h2 class="admin-title-user">Modification de l'article</h2>
+    {% for message in app.session.flashbag.get('success') %}
+        <div id="flash-message"class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {{ form_start(delete_form) }}
+    <input type="submit" value="Supprimer" class="btn btn-primary">
+    {{ form_end(delete_form) }}
+
+    {{ form_start(edit_form,{'attr':{'style':'max-width:600px'}}) }}
+    <div class="form-group">
+        {{ form_label(edit_form.title,null,{'label':'Titre'}) }}
+        {{ form_widget(edit_form.title,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(edit_form.title) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(edit_form.newsDate)}}<br/>
+        {{ form_widget(edit_form.newsDate.day, {'attr': {
+            'class': 'custom-select'
+        }}) }}
+        {{ form_widget(edit_form.newsDate.month, {'attr': {
+            'class': 'custom-select'
+        }}) }}
+        {{ form_widget(edit_form.newsDate.year, {'attr': {
+            'class': 'custom-select'
+        }}) }}
+        {{ form_errors(edit_form.newsDate) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(edit_form.post,null,{'label':'Contenu de l\'article'}) }}
+        {{ form_widget(edit_form.post,{'id':'post_write_content', 'attr':{'class':'form-control'}}) }}
+        {{ form_errors(edit_form.post) }}
+    </div>
+
+    <div class="input-group">
+        <label class="input-group-btn">
+            <span class="btn btn-primary">
+                <i class="material-icons">file_upload</i>
+                {{ form_widget(edit_form.picture, {'attr': {'style': 'display: none;'}}) }}
+            </span>
+        </label>
+        <input type="text" class="form-control" style="height: 43.5px" readonly placeholder="Télécharger l'image de l'article (JPG/PNG)">
+    </div>
+    {{ form_errors(edit_form.picture.file) }}
+    <br>
+
+    <div class="form-group">
+        {{ form_widget(edit_form.published) }}
+        {{ form_label(edit_form.published,null,{'label':'Publié'}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(edit_form.user,null,{'label':'Utilisateur'}) }}
+        {{ form_widget(edit_form.user,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(edit_form.user) }}
+    </div><br>
+
+    <input type="submit" value="Modification" class="btn btn-primary" />
+    <a href="{{ path('news_index') }}" class="btn btn-primary">Retour à la liste</a>
+
+    {{ form_end(edit_form) }}
+{% endblock %}

@@ -1,0 +1,31 @@
+{{ form_start(form, {'method': 'POST', 'action': path('fos_user_profile_edit '), 'attr': {'class': 'profile'}}) }}
+<div class="row">
+  <div class="col-lg-6">
+    <div class="form-group">
+      {{ form_row(form.name,{'attr': {'class':'form-control'}}) }}
+    </div>
+    <div class="form-group">
+      {{ form_row(form.firstname,{'attr': {'class':'form-control'}}) }}
+    </div>
+    <div class="form-group">
+      {{ form_row(form.profession,{'attr': {'class':'form-control'}}) }}
+    </div>
+    <div class="form-group">
+      {{ form_row(form.birthday,{'attr': {'class':'form-control'}}) }}
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="form-check">
+      {{ form_errors(form.isnaturalist) }}
+      {{ form_widget(form.isnaturalist) }}
+      {{ form_label(form.isnaturalist) }}
+    </div>
+    <div class="form-group">
+      {{ form_label(form.file) }}
+      {{ form_widget(form.file,{'attr': {'class':'form-control'}}) }}
+      {{ form_errors(form.file) }}
+    </div>
+    {{ form_row(form.save,{'attr': {'class':'btn btn-primary btn-block col-lg-3'}}) }}
+    {{ form_end(form) }}
+  </div>
+</div>

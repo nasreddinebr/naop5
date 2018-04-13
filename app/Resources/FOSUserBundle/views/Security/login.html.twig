@@ -1,0 +1,14 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block title %}
+  Page de Connexion
+  {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+<body id="connection">
+{% endblock %}
+
+{% block fos_user_content %}
+  {{ include('@FOSUser/Security/login_content.html.twig') }}
+{% endblock fos_user_content %}

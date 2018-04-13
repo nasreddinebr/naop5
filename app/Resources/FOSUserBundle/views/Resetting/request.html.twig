@@ -1,0 +1,10 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block title %}
+  Réinitialisation Mot de Passe
+  {{ parent() }}
+{% endblock %}
+
+{% block fos_user_content %}
+  {% include "@FOSUser/Resetting/request_content.html.twig" %}
+{% endblock fos_user_content %}

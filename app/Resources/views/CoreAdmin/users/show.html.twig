@@ -1,0 +1,96 @@
+{% extends 'baseAdmin.html.twig'  %}
+
+{% block bodyadmin  %}
+    <h2 class="admin-title-user">Utilisateur numéro {{ user.id }}</h2>
+
+
+    {{ form_start(delete_form) }}
+    <input type="submit" class="btn btn-primary" value="Supprimer">
+    {{ form_end(delete_form) }}
+
+
+    <table class="table table-striped" >
+
+        <tbody>
+            <tr>
+                <th scope="col" >Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th scope="col" >Nom</th>
+                <td>{{ user.name }}</td>
+            </tr>
+            <tr>
+                <th scope="col" >Prénom</th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th scope="col" >Profession</th>
+                <td>{{ user.profession }}</td>
+            </tr>
+            <tr>
+                <th scope="col" >Demande Naturaliste</th>
+                <td>{% if user.isnaturalist %}Oui{% else %}Non{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="col">Rôle</th>
+                <td>
+                    {% for role in user.roles %}
+
+                        {% if 'ROLE_ADMIN' in role  %}
+                            {% if loop.first %}
+                                <button type="button" class="btn btn-dark">Administrateur</button>
+                            {% endif %}
+                        {% elseif 'ROLE_NATURALIST' in role %}
+                            {% if loop.first %}
+                                <button type="button" class="btn btn-success">Naturaliste</button>
+                            {% endif %}
+                        {% elseif 'ROLE_PARTICULAR' in role %}
+                            {% if loop.first %}
+                                <button type="button" class="btn btn-warning">Particulier</button>
+                            {% endif %}
+                        {% elseif 'AUCUN' in role %}
+                            {% if loop.first %}
+                                <button type="button" class="btn btn-light">Aucun</button>
+                            {% endif %}
+                        {% endif %}
+
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="col" >Né(e) le</th>
+                <td>{% if user.birthday %}{{ user.birthday|date('d-m-Y ') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th scope="col" >Carte professionnelle</th>
+                {% if user.picture is not null %}
+                    <td>
+                        <img src="{{ asset('uploads/' ~ user.picture.name) }}" style="width:9rem" data-toggle="modal" data-target="#exampleModal">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Carte Professionnelle</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" >
+                                        <img src="{{ asset('uploads/' ~ user.picture.name) }}" style="width: 30rem" >
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+            <a href="{{ path('admin_index') }}" class="btn btn-primary">Retour à la liste</a>
+            <a href="{{ path('admin_edit', { 'id': user.id }) }}" class="btn btn-primary" >Modifier</a>
+
+{% endblock %}

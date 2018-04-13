@@ -1,0 +1,70 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page Contact - {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+    <body id="observation">
+{% endblock %}
+
+{% block body %}
+    <!-- Search Bar -->
+    <div id="search" class="container-fluid">
+        {{ include('::search.html.twig') }}
+    </div>
+
+    <!-- Page Header -->
+    <div class="container-fluid">
+        <div id="pageHeader" class="row">
+            <div class="col-1" id="return">
+                <a href="{{ path('search_result', { 'id': observation.aves.id }) }}">
+                    <i class="material-icons">keyboard_backspace</i>
+                </a>
+            </div>
+            <div class="col-10" id="title">
+                <p>Observation de : {{ observation.users.username }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- informations -->
+    <div class="container" id="detaile">
+        <div class="row justify-content-center">
+            <div class="col-6 col-sm-6 col-md-7 col-lg-8" id="image">
+                <div class="card">
+                    {% if picture %}
+                        <img class="card-img-top w-100 d-block" src="{{ asset('img/')}}{{ picture.name }}" alt="{{ picture.alt }}">
+                    {% else %}
+                        <img class="card-img-top w-100 d-block" src="{{ asset('img/default.gif')}}" alt="default">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-6 col-sm-6 col-md-5 col-lg-4" id="informations">
+                <p>{{ observation.aves.nameVern }}</p>
+                <p>{{ observation.aves.tlName }}</p>
+                <p>{{ observation.aves.family }}</p>
+                <p>{{ observation.aves.tlOrder }}</p>
+            </div>
+        </div>
+    </div>
+    <div id="commentaire">
+        <h3>Commentaire </h3>
+        <p>{{ observation.observationComment }}</p>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $("#termsearch").keyup(function () {
+                // Recovering data from the database whit AJAX
+                let termSearch = $(this).val();
+                termSearch = $.trim(termSearch);
+                callAjax('{{ path('search') }}', termSearch);
+            })
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+    <h2 class="admin-title-user">Nouvel utilisateur</h2>
+
+
+    {{ form_start(form,{'attr':{'style':'max-width:600px'}}) }}
+    <div class="form-group">
+        {{ form_label(form.username,null,{'label':'Pseudo'}) }}
+        {{ form_widget(form.username,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.username) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.email) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.plainPassword.first) }}
+        {{ form_widget(form.plainPassword.first,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.plainPassword.first) }}
+    </div>
+     <div class="form-group">
+         {{ form_label(form.plainPassword.second) }}
+         {{ form_widget(form.plainPassword.second,{'attr':{'class':'form-control'}}) }}
+         {{ form_errors(form.plainPassword.second) }}
+     </div>
+     <div class="form-group">
+         {{ form_label(form.name,null,{'label':'Nom'}) }}
+         {{ form_widget(form.name,{'attr':{'class':'form-control'}}) }}
+         {{ form_errors(form.name) }}
+     </div>
+     <div class="form-group">
+         {{ form_label(form.firstname,null,{'label':'Prénom'}) }}
+         {{ form_widget(form.firstname,{'attr':{'class':'form-control'}}) }}
+         {{ form_errors(form.firstname) }}
+     </div>
+     <div class="form-group">
+         {{ form_label(form.profession,null,{'label':'Profession'}) }}
+         {{ form_widget(form.profession,{'attr':{'class':'form-control'}}) }}
+         {{ form_errors(form.profession) }}
+     </div>
+     <div class="form-group">
+         {{ form_label(form.birthday,null,{'label':'Date de naissance'})}}<br/>
+         {{ form_widget(form.birthday.day, {'attr': {
+             'class': 'custom-select'
+         }}) }}
+         {{ form_widget(form.birthday.month, {'attr': {
+             'class': 'custom-select'
+         }}) }}
+         {{ form_widget(form.birthday.year, {'attr': {
+             'class': 'custom-select'
+         }}) }}
+         {{ form_errors(form.birthday) }}
+     </div>
+
+    <div class="form-group">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Role</label>
+            <select class="custom-select form-control" id="inlineFormCustomSelect" name="roles">
+                <option selected>Aucun</option>
+                <option value="ROLE_ADMIN">Administrateur</option>
+                <option value="ROLE_NATURALIST">Naturaliste</option>
+                <option value="ROLE_PARTICULAR">Particulier</option>
+            </select>
+    </div>
+    <input type="submit"  value="Créer" class="btn btn-primary" />
+    <a href="{{ path('admin_index') }}" class="btn btn-primary" >Retour à la liste</a>
+
+
+    {{ form_widget(form._token) }}
+
+    {{ form_end(form,{'render_rest':false}) }}
+
+
+
+
+{% endblock %}
+
+  {% block javascript %}
+     <script>
+
+         // We can attach the `fileselect` event to all file inputs on the page
+
+         $(document).on('change', ':file', function() {
+             let input = $(this),
+                 numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+             input.trigger('fileselect', [numFiles, label]);
+         });
+
+         // We can watch for our custom `fileselect` event like this
+         $(document).ready( function() {
+             $(':file').on('fileselect', function (event, numFiles, label) {
+
+                 let input = $(this).parents('.input-group').find(':text'),
+                     log = numFiles > 1 ? numFiles + ' files selected' : label;
+                 if (input.length) {
+                     input.val(log);
+                 } else {
+                     if (log) alert(log);
+                 }
+             });
+         });
+
+     </script>
+  {% endblock %}

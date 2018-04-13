@@ -1,0 +1,110 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+    {% include "@FOSUser/Profile/edit_content.html.twig" %}
+{% endblock fos_user_content %}
+
+{% block javascript %}
+
+<script>
+
+    $(function() {
+         $('#email_users_edit_update').prop('disabled', true);
+
+         var currentEmailapp = $("#account-user-currentEmail").text();
+
+        $('#currentEmail').blur(function() {
+
+            if (currentEmailapp === $('#currentEmail').val()){
+                $('#email_users_edit_update').prop('disabled', false);
+            }
+            else{
+                $('#email_users_edit_update').prop('disabled', true);
+                $('#afterErrorMessageEmail').after('<div class="alert alert-primary" id="messageErrorEmail" role="alert">\n' +
+                    '                  </div>');
+                $('#messageErrorEmail').text('l\'email ne correspond pas à celui fourni lors de votre inscription');
+               //
+
+            }
+            //setTimeout(function (){ messageErrorEmail.style.display = "none";}, 2000);
+            setTimeout(function (){ $('#messageErrorEmail').remove();}, 3000);
+
+        });
+        if ($('li')[0]){
+            setTimeout(function (){ $('ul').remove();}, 5000);
+        }
+
+        // Intercept flash messages and assign them an id and a Bootstrap class
+        if ($('.flash-success')) {
+            $('.flash-success').attr({
+                'id': 'flash-message',
+                'class': 'alert alert-success'
+            });
+        }
+        if ($('.flash-error')){
+            $('.flash-error').attr({
+                'id': 'flash-message',
+                'class': 'alert alert-danger'
+            });
+        }
+
+        /* Script notification */
+        $('.notification').each(function () {
+            $(this).animate({'opacity': 1, 'left': '0px'}, 1000);
+            $(this).delay(7000).fadeOut('slow');
+        });
+        $('.notification').click(function() {
+            $(this).hide();
+        });
+
+        // We can attach the `fileselect` event to all file inputs on the page
+        $(document).on('change', ':file', function() {
+            let input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready( function() {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+
+                let input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+        });
+    });
+
+        // We can attach the `fileselect` event to all file inputs on the page
+
+        $(document).on('change', ':file', function() {
+        let input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready( function() {
+        $(':file').on('fileselect', function (event, numFiles, label) {
+
+            let input = $(this).parents('.input-group').find(':text'),
+                log = numFiles > 1 ? numFiles + ' files selected' : label;
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+        });
+    });
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+  <div class="container col-sm-12 col-md-8 col-lg-8" id="error-container">
+    <img src="{{ asset('img/error-picture.png')}}" id="error-picture">
+    <div id="error-block">
+      <h2 id="error-title">Cette page n’est malheureusement pas disponible pour le moment.
+      </h2>
+      <p id="error-text">Le lien que vous avez suivi peut être incorrect ou la page peut avoir été supprimée. Pour revenir au site, veuillez cliquer sur le lien suivant :
+      </p>
+      <div class="d-flex justify-content-center">
+        <a href="{{path('home')}}" class="btn btn-primary" type="button" id="error-button">Retour à la page d'accueil</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

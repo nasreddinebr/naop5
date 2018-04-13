@@ -1,0 +1,37 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+    <h2 class="admin-title-user">Articles</h2>
+
+    {{ form_start(delete_form) }}
+    <input type="submit" value="Supprimer" class="btn btn-primary">
+    {{ form_end(delete_form) }}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ news.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ news.title }}</td>
+            </tr>
+            <tr>
+                <th>Date de publication</th>
+                <td>{% if news.newsDate %}{{ news.newsDate|date('d-m-Y-h-m-s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Contenu de l'article</th>
+                <td>{{ news.post|raw }}</td>
+            </tr>
+            <tr>
+                <th>Publié</th>
+                <td>{% if news.published %}Oui{% else %}Non{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+            <a href="{{ path('news_index') }}"  class="btn btn-primary">Retour à la liste</a>
+            <a href="{{ path('news_edit', { 'id': news.id }) }}" class="btn btn-primary">Modifier</a>
+
+{% endblock %}

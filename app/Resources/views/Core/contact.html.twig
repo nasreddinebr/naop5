@@ -1,0 +1,83 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page Contact - {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+    <body id="contact">
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <h2 class="color-green">Contact</h2>
+
+    <div class="form-contact">
+        {% for message in app.session.flashbag.get('success') %}
+            <div id="flash-message"class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        {{ form_start(contactForm) }}
+
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    {{ form_row(contactForm.name,{
+                        'label': 'Nom *',
+                    }) }}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    {{ form_row(contactForm.firstname,{
+                        'label': 'Prénom *',
+                    }) }}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    {{ form_row(contactForm.email,{
+                        'label': 'E-mail *',
+                    }) }}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    {{ form_row(contactForm.subject,{
+                        'label': 'Objet *',
+                    }) }}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="form-group">
+                    {{ form_row(contactForm.message,{
+                        'label': 'Message *',
+                    }) }}
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="g-recaptcha" id="recaptcha" data-sitekey="6Lf18DwUAAAAAIKQO6Ri94rnZDWcplWcli7_6qQ1"></div>
+
+            </div>
+            <div class="row justify-content-center" style="margin-top: 20px">
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </div>
+        {{ form_end(contactForm) }}
+    </div>
+
+    <div class="row justify-content-center" style="margin-top: 30px">
+        <br>
+        <p>Nos amis les oiseaux<br>
+            15 rue de Paris<br>
+            65200 - Paris<br>
+            04.54.23.23.56<br>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

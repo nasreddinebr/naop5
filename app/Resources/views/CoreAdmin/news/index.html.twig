@@ -1,0 +1,40 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+    <h2 class="admin-title-user">Liste des actualités</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Titre</th>
+                <th scope="col">Date de publication</th>
+                <th scope="col">Article</th>
+                <th scope="col">Publié</th>
+                <th scope="col">Voir</th>
+                <th scope="col">Modifier</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for news in news %}
+            <tr>
+                <td>{{ news.title }}</td>
+
+                <td>{% if news.newsDate %}{{ news.newsDate|date('d-m-y H:m:s') }}{% endif %}</td>
+                <td style="max-width: 450px">{{ news.post | truncate(150, true, '...')|raw }}</td>
+                <td>{% if news.published %}Oui{% else %}Non{% endif %}</td>
+                <td>
+                    <a href="{{ path('news_show', { 'id': news.id }) }}" class="btn btn-outline-primary circle view" title="Voir">
+                        <i class="material-icons">visibility</i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('news_edit', { 'id': news.id }) }}" class="btn btn-outline-primary circle edit" title="Modifier">
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+            <a href="{{ path('news_new') }}" class="btn btn-primary">Créer un nouvel article</a>
+{% endblock %}

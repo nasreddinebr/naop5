@@ -1,0 +1,184 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page Notre Association -
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+<body id="association">
+{% endblock %}
+
+{% block body %}
+    <h3 class="display-6" style="margin-top: 20px">Faire une observation</h3>
+
+    <div class="container">
+        <div class="row justify-content-center" style="margin-bottom: 30px">
+            <div class="col col-sm-12 col-md-8 col-lg-6">
+                {# On affiche tous les messages flash dont le nom est « info » #}
+                {% for message in app.session.flashbag.get('error') %}
+                    <div id="flash-message"class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {{ form_start(form, {'attr': {'id': 'obsrevation_form'}}) }}
+
+                    {# Les erreurs générales du formulaire. #}
+                    {{ form_errors(form) }}
+
+                    <div id="zoneSearch" class="form-group">
+                        {{ form_label(form.observation.aves.tlName, "Nom de l'oiseau : *", {'label_attr': { 'class': 'control-label' }}) }}
+                        {{ form_widget(form.observation.aves.tlName, {'id': 'termsearch', 'attr': {
+                            'class': 'form-control'
+                        }}) }}
+                        {{ form_errors(form.observation.aves.tlName) }}
+                        <div id="result">
+                            <ul class="list-group" id="listResult"></ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.observation.observationDate, "Date de l'observation : *", {'label_attr': { 'class': 'control-label' }}) }}
+                        <br>
+                        {{ form_widget(form.observation.observationDate.day, {'attr': {
+                            'class': 'custom-select'
+                        }}) }}
+                        {{ form_widget(form.observation.observationDate.month, {'attr': {
+                            'class': 'custom-select'
+                        }}) }}
+                        {{ form_widget(form.observation.observationDate.year, {'attr': {
+                            'class': 'custom-select'
+                        }}) }}
+                        {{ form_errors(form.observation.observationDate) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.observation.observationComment, "Commentaires : *", {'label_attr': { 'class': 'control-label' }}) }}
+                        {{ form_widget(form.observation.observationComment, {'attr': {
+                            'class': 'form-control',
+                            'rows': '10'
+                        }}) }}
+                        {{ form_errors(form.observation.observationComment) }}
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                <i class="material-icons">file_upload</i>
+                                {{ form_widget(form.file, {'attr': {'style': 'display: none;'}}) }}
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" style="height: 43.5px" readonly placeholder="Télécharger la photo de l’oiseau (JPG/PNG)">
+                    </div>
+                    {{ form_errors(form.file) }}
+
+                    <br>
+                    <div class="form-check">
+                        <input type="checkbox" id="manualLocation">
+                        <label class="form-check-label" for="manualLocation">
+                            Localisation manuelle
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.observation.latitude, "Latitude : *", {'label_attr': { 'class': 'control-label' }}) }}
+                        {{ form_widget(form.observation.latitude, {'id': 'inputlat','attr': {
+                            'class': 'form-control',
+                            'readonly': true
+                        }}) }}
+                        {{ form_errors(form.observation.latitude) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.observation.longitude, "Longitude : *", {'label_attr': { 'class': 'control-label' }}) }}
+                        {{ form_widget(form.observation.longitude, {'id': 'inputlng', 'attr': {
+                            'class': 'form-control',
+                            'readonly': true
+                        }}) }}
+                        {{ form_errors(form.observation.longitude) }}
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        {{ form_widget(form.valider, {'id':'btnvalider', 'attr': {
+                            'class': 'btn btn-primary btn-lg'
+                        }}) }}
+                    </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function() {
+            // Recherche name of bird
+            $("#termsearch").keyup(function () {
+                // Recovering data from the database whit AJAX
+                let termSearch = $(this).val();
+                termSearch = $.trim(termSearch);
+                callAjax('{{ path('search_for_observation') }}', termSearch);
+            });
+
+            $(document).on('click', 'li', function(){
+                let bird = $(this).text();
+                $('#termsearch').val(bird);
+                $('#listResult').html("");
+                $('#result').height(0);
+            });
+
+            // Add the coordinates of the geolocation automatically.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+
+            // Add the coordinates of the geolocation manually.
+            $('#manualLocation').click(function() {
+                if($("#manualLocation").is(":checked")) {
+                    $('#inputlat').removeAttr('readonly');
+                    $('#inputlng').removeAttr('readonly');
+                }else {
+                    $('#inputlat').attr('readonly', 'readonly');
+                    $('#inputlng').attr('readonly', 'readonly');
+                }
+            });
+
+            // We can attach the `fileselect` event to all file inputs on the page
+            $(document).on('change', ':file', function() {
+                let input = $(this),
+                    numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [numFiles, label]);
+            });
+
+            // We can watch for our custom `fileselect` event like this
+            $(document).ready( function() {
+                $(':file').on('fileselect', function (event, numFiles, label) {
+
+                    let input = $(this).parents('.input-group').find(':text'),
+                        log = numFiles > 1 ? numFiles + ' files selected' : label;
+                    if (input.length) {
+                        input.val(log);
+                    } else {
+                        if (log) alert(log);
+                    }
+                });
+            });
+        });
+
+        function showPosition(position) {
+            var lat = parseFloat(position.coords.latitude);
+            var lng = parseFloat(position.coords.longitude);
+            document.getElementById("inputlat").value= lat;
+            document.getElementById("inputlng").value = lng;
+        }
+    </script>
+
+{% endblock %}

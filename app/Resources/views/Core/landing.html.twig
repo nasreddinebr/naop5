@@ -1,0 +1,67 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+  Landing page -
+  {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+  <body id="association">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid white-background">
+
+    <h1 class="color-green icon-desktop"><img src="{{ asset('img/settings.png')}}" alt="icon"> Notre projet</h1>
+    <h1 class="color-green icon-mobil"><img src="{{ asset('img/settings-mobil.png')}}" alt="icon"> Notre projet</h1>
+
+</div>
+
+<div class="container-fluid white-background">
+
+    <p>
+        Depuis l'industrialisation exacerbée enclenchée par l'Homme, l'environnement souffre. Et les animaux avec lui. Ainsi, de nombreuses espèces sont menacées par le réchauffement climatique et l'activité humaine. Notre programme de recherche est basé sur le recensement des espèces d'oiseaux. Ainsi nous pourons déterminer qu'elles espèces sont plus sensibles au réchauffement climatique. Connaître l'impact de l'urbanisation et l'influence de l'agriculture sur ces espèces.
+    </p>
+
+</div>
+
+<div class="container-fluid green-background">
+
+    <h2 class="color-white icon-desktop"><img src="{{ asset('img/target.png')}}" alt="icon"> Nos objectifs</h2>
+    <h2 class="color-white icon-mobil"><img src="{{ asset('img/target-mobil.png')}}" alt="icon"> Nos objectifs</h2>
+    <p>
+        Notre site participatif a pour objectif de collecter des informations qui permettront d'étudier les effets du climat,
+        de l'urbanisation et de l'agriculture sur la biodiversité. Grâce à vous, adhérents ou simples contributeurs,
+        nous souhaitons recueillir un maximum d’observations. Ensemble préservons la biodiversité et contribuons à la protection des oiseaux.
+    </p>
+
+</div>
+
+<div class="container-fluid white-background">
+
+    <h2 class="color-green  icon-desktop"><img src="{{ asset('img/agreement.png')}}" alt="icon"> Votre mission</h2>
+    <h2 class="color-green  icon-mobil"><img src="{{ asset('img/agreement-mobil.png')}}" alt="icon"> Votre mission</h2>
+    <p>
+        Même si les conséquences exactes de ces changements sont encore difficiles à apprécier du fait d'un manque de recul, les premiers résultats des recherches semblent inquiétants et demandent des actions. En devenant Observ'Acteur vous faites un geste pour la planète et ces enjeux environnementaux.<br>
+        Lors de vos promenades ou déplacements si vous voyez des oiseaux, prenez les en photo et poster votre observation sur notre site avec les coordonées GPS.
+    </p>
+
+</div>
+<div class="container-fluid white-background">
+    <div class="row ">
+        <h2 class="flex justify-content-center" style="display: block; margin : auto;">Alors n'attendez plus pour nous rejoindre...</h2>
+    </div>
+    <div class="row ">
+        <p class="flex justify-content-center" style="display: block; margin : auto;"> <a href="{{ path('fos_user_registration_register') }}" class="btn btn-primary btn-center">Oui je souhaite devenir Observ'Acteur</a></p>
+    </div>
+    <div class="row ">
+        <p> <br> </p>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

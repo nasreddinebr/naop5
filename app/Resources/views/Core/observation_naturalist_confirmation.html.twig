@@ -1,0 +1,33 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+{% block meta %}
+    <meta http-equiv="refresh" content="5; URL={{ path('home') }}">
+{% endblock %}
+{% block title %}
+    Confimation -
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+<body id="association">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div id="validationmsg" class="col col-sm-12 col-md-10 col-lg-8">
+            <div class="jumbotron">
+                <h3 class="display-6">Votre observation a bien été enregistrée.</h3>
+                <p class="lead">Votre observation est enregistré et validé avec succès.</p>
+                <p class="lead">Vous serez redirigé vers la page d'accueil dans 5 secondes<br>
+                    Si votre navigateur ne supporte pas la redirection automatique veuillez cliquer
+                    <a href="{{ path('home') }}">ICI</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

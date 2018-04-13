@@ -1,0 +1,70 @@
+{% extends 'baseAdmin.html.twig'  %}
+
+{% block bodyadmin  %}
+
+    <h2 class="admin-title-user">Modification de l'utilisateur</h2>
+
+    {% for message in app.session.flashbag.get('notice-edit') %}
+        <div class="alert alert-info" role="alert">Message flash : {{ message }}</div>
+    {% endfor %}
+    {{ form_start(edit_form,{'attr':{'style':'max-width:600px'}}) }}
+
+        <div class="form-group">
+            {{ form_label(edit_form.username,null,{'label':'Pseudo'}) }}
+            {{ form_widget(edit_form.username,{'attr':{'class':'form-control'}}) }}
+            {{ form_errors(edit_form.username) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(edit_form.email,null,{'label':'E-mail'}) }}
+            {{ form_widget(edit_form.email,{'attr':{'class':'form-control'}}) }}
+            {{ form_errors(edit_form.email) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(edit_form.name,null,{'label':'Nom'}) }}
+            {{ form_widget(edit_form.name,{'attr':{'class':'form-control'}}) }}
+            {{ form_errors(edit_form.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(edit_form.firstname,null,{'label':'Prénom'}) }}
+            {{ form_widget(edit_form.firstname,{'attr':{'class':'form-control'}}) }}
+            {{ form_errors(edit_form.firstname) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(edit_form.profession,null,{'label':'Profession'}) }}
+            {{ form_widget(edit_form.profession,{'attr':{'class':'form-control'}}) }}
+            {{ form_errors(edit_form.profession) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(edit_form.birthday,null,{'label':'Date de naissance'})}}<br/>
+            {{ form_widget(edit_form.birthday.day, {'attr': {
+                'class': 'custom-select'
+            }}) }}
+            {{ form_widget(edit_form.birthday.month, {'attr': {
+                'class': 'custom-select'
+            }}) }}
+            {{ form_widget(edit_form.birthday.year, {'attr': {
+                'class': 'custom-select'
+            }}) }}
+            {{ form_errors(edit_form.birthday) }}
+        </div>
+
+        <div class="form-group">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Préférence</label>
+            <select class="custom-select form-control" id="inlineFormCustomSelect" name="roles">
+                <option selected>Aucun</option>
+                <option value="ROLE_ADMIN">Administrateur</option>
+                <option value="ROLE_NATURALIST">Naturaliste</option>
+                <option value="ROLE_PARTICULAR">Particulier</option>
+            </select>
+        </div>
+
+        <a href="{{ path('admin_index') }}" class="btn btn-primary" >Retour à la liste</a>
+        <input type="submit" value="Modifier" class="btn btn-primary" />
+
+        {{ form_widget(edit_form._token) }}
+
+    {{ form_end(edit_form,{'render_rest':false}) }}
+
+
+
+{% endblock %}

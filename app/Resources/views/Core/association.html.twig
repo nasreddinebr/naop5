@@ -1,0 +1,67 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+  Page Notre Association -
+  {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+  <body id="association">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid white-background">
+
+    <h1 class="color-green">Notre association</h1>
+
+</div>
+
+<div class="container-fluid green-background">
+
+    <h2 class="color-white">Notre histoire</h2>
+
+    <p>
+        Nos amis les oiseaux a été fondé en 2013 par Michel Dujardin, regroupant des passionnés d'ornithologie. Nous étions plusieurs amis à échanger nos observations. Les oiseaux sont des indicateurs des changements en cours sur la Terre : ils migrent et pondent parfois plus tôt que dans le passé, leurs aires de répartition se modifient. Nous avons décidé d'étudier ce phenomène. La création d'une associaton c'est alors imposée à nous.
+        À ce jour, l'association regroupe plus de 171 adhérents dont 2 naturalistes qui contribuent chaque jour à la faire vivre.
+    </p>
+
+</div>
+
+<div class="container-fluid white-background">
+
+    <h2 class="color-green">Notre mission</h2>
+    <p>
+      	La NAO, en patenariat avec la LPO (Ligue pour la Protection des Oiseaux), met en œuvre des plans nationaux de restauration d’oiseaux parmi les plus menacés de France, coordonne des programmes européens de sauvegarde d’espèces et gère la réintroduction d’oiseaux menacés.<br>
+	    En participant à notre programme de recensement des espèces d'oiseaux, vos observations nous permettront de suivre l'état des populations d'oiseaux.
+    </p>
+
+</div>
+
+<div class="container-fluid green-background">
+
+    <h2 class="color-white">Notre équipe</h2>
+    <div class="row justify-content-center">
+	    <p>
+	    	Nous sommes tous des passionnés de la nature et d'ornithologie animés d'une envie de partager nos connaissances.
+	    </p>
+    </div>
+    <div class="row justify-content-center">
+	    <p>	
+	    	<strong>Président : </strong>Michel Dujardin fondateur de l’association, retraité<br> 
+	     	<strong>Trésorier : </strong>Nadine Lenoire enseignante<br>
+	     	<strong>Secrétaire : </strong>Gilles Desforge Photographe
+	    </p>
+	</div>
+
+</div>
+
+<div class="container-fluid white-background">
+    <div class="row ">
+        <p class="flex justify-content-center" style="display: block; margin : auto;"> <a href="{{ path('landing') }}" class="btn btn-primary btn-center">Devenir Observ'Acteur</a></p>
+    </div>
+</div>
+
+{% endblock %}

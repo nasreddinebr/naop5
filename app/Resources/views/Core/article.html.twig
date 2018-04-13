@@ -1,0 +1,102 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page Article - {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+    <body id="article">
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="construction">
+
+            <h2 class="color-green">{{ article.title }}</h2>
+            <div class="row col-2 offset-8">
+                <span class="color-green font-size-14">
+                    {{ article.newsDate|date("d/m/Y") }}
+                </span>
+            </div>
+            <div class=" row ">
+                <div class="card">
+                        {% if article.picture is not null %}
+                            <img class="card-img-top" src="{{ asset('uploads/' ~ article.picture.name)}}" alt="{{ article.picture.alt }}">
+                        {% else %}
+                            <img class="card-img-top" src="{{ asset('img/default.gif')}}" alt="default">
+                        {% endif %}
+                    <div class="card-body" style="text-align: justify; margin: 5px 14px;">
+                        <span class="card-text">{{ article.post|raw }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="commentaire">
+        <h3>Commentaires </h3>
+    </div>
+
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+
+            {{ form_start(commentForm) }}
+
+            <div class="container-fluid">
+                <div class="row justify-content-sm-center">
+                    <div class="textarea-with col-4">
+                        {{ form_row(commentForm.content,{
+                            'label': ' '
+                        }) }}
+                    </div>
+                </div>
+                <div class="row post">
+                    <button type="submit" class="btn btn-primary btn-center" style="display: block; margin : auto;">Poster mon commentaire</button>
+                </div>
+            </div>
+
+            {{ form_end(commentForm) }}
+
+        {% else %}
+
+            <div class="container-fluid">
+                <div class="text-center">
+                    <p>Pour publier un commentaire, merci de vous <strong>connecter</strong> ou de vous <strong>inscrire.</strong></p>
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {% set index = 0 %}
+    {% for c in artComments %}
+        {% if index is divisible by(2) %}
+            <div class="container-fluid green-background text-14px">
+                <div class="row justify-content-between">
+                    <p>
+                        <div class="col-8"><strong>{{ c.author }}</strong></div>
+                        <div class="col-4">{{ c.commentDate |date("d/m/Y") }}</div>
+                    </p>
+                </div>
+                <div>
+                    <p>{{ c.content }}</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="container-fluid white-background text-14px">
+                <div class="row justify-content-between">
+                    <p>
+                        <div class="col-8">{{ c.author }}</div>
+                        <div class="col-4">{{ c.commentDate |date("d/m/Y") }}</div>
+                    </p>
+                </div>
+                <div>
+                    <p>{{ c.content }}</p>
+                </div>
+            </div>
+        {% endif %}
+        {% set index = index + 1 %}
+    {% endfor %}
+{% endblock %}

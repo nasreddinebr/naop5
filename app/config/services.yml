@@ -1,0 +1,84 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+parameters:
+    #parameter_name:   value
+    file_directory: 'uploads'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire:      true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public:        false
+
+    # Configuration and call a service FOSUBUserProvider
+    app.fos_user.oauth_provider:
+                # Return the FOSUBUserProvider
+                class: AppBundle\Security\Core\User\FOSUBUserProvider
+                arguments:
+                    # Inject as first argument the user_manager of FOSUserBundle
+                    - '@fos_user.user_manager'
+                    # An object/array with the registered Social Media from config.yml
+                    - {facebook: facebook_id, google: google_id, twitter: twitter_id}
+
+    app.redirect_after_registration_subscriber:
+
+                class: AppBundle\EventListener\RedirectAfterRegistrationSubscriber
+
+                tags:
+                     - { name: kernel.event_subscriber, method: onRegistrationSuccess }
+
+
+    app.add_role_after_registration_subscriber:
+
+               class: AppBundle\EventListener\AddRoleAfterRegistrationSubscriber
+
+               tags:
+                     - { name: kernel.event_subscriber, method: onRegistrationSuccess }
+
+    # creating and using our own change form
+    app.form.edit:
+
+                 class: AppBundle\Form\UsersEditType
+
+                 tags:
+                      - { name: form.type }
+
+    #creating and using of our own registration form
+    app.form.register:
+
+                 class: AppBundle\Form\UsersRegisterType
+
+                 tags:
+                     - { name: form.type }
+
+    app.redirect.after.login:
+
+                 class: AppBundle\EventListener\AfterLoginRedirection
+
+    # Mail Notification Service
+    mail_notification:
+        class: AppBundle\Service\MailNotification
+        public: true
+        arguments:
+            - "@mailer"
+            - '@templating'
+            - "@doctrine.orm.entity_manager"
+
+    # Newsletter subscription
+    newsletter_subscribe:
+        class: AppBundle\Service\NewsLetterSubscribe
+        public: true
+        arguments:
+            - '@templating'
+
+    # Get all observations not validate
+    observations_not_validate:
+        class: AppBundle\Service\ObservationsNotValidate
+        public: true
+        arguments:
+            - "@doctrine.orm.entity_manager"

@@ -1,0 +1,55 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+    <h2 class="admin-title-user">Création d'un article</h2>
+
+    {{ form_start(form,{'attr':{'style':'max-width:600px'}}) }}
+    <div class="form-group">
+        {{ form_label(form.title,null,{'label':'Titre *'}) }}
+        {{ form_widget(form.title,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.title) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.newsDate,null,{'label':'Date de publication *'}) }}<br/>
+        {{ form_widget(form.newsDate.day, {'attr': {
+            'class': 'custom-select'
+        }}) }}
+        {{ form_widget(form.newsDate.month, {'attr': {
+            'class': 'custom-select'
+        }}) }}
+        {{ form_widget(form.newsDate.year, {'attr': {
+            'class': 'custom-select'
+        }}) }}
+        {{ form_errors(form.newsDate) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.post,null,{'label':'Contenu de l\'article *'}) }}
+        {{ form_widget(form.post,{'id':'post_write_content', 'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.post) }}
+    </div><br>
+    <div class="input-group">
+        <label class="input-group-btn">
+            <span class="btn btn-primary">
+                <i class="material-icons">file_upload</i>
+                {{ form_widget(form.picture.file, {'attr': {'style': 'display: none;'}}) }}
+            </span>
+        </label>
+        <input type="text" class="form-control" style="height: 43.5px" readonly placeholder="Télécharger l'image de l'article (JPG/PNG)">
+    </div>
+    {{ form_errors(form.picture.file) }}
+    <br/>
+    <div class="form-group">
+        {{ form_widget(form.published) }}
+        {{ form_label(form.published,null,{'label':'Publié'}) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.user,null,{'label':'Utilisateur'}) }}
+        {{ form_widget(form.user,{'attr':{'class':'form-control'}}) }}
+        {{ form_errors(form.user) }}
+    </div>
+    <input type="submit" value="Créer" class="btn btn-primary"/>
+    <a href="{{ path('news_index') }}" class="btn btn-primary">Retour à la liste</a>
+    {{ form_end(form) }}
+{% endblock %}
+
+

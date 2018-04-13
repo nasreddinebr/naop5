@@ -1,0 +1,232 @@
+{% trans_default_domain 'FOSUserBundle' %}
+    {# Notification System #}
+    {% if is_granted('ROLE_NATURALIST') %}
+        {% if observationNotValidated|length > 0 %}
+            <div class="notification">
+                <img class="notification-image" src="{{ asset('android-chrome-144x144.png') }}" alt="android-chrome">
+                <span class="notification-content">
+                <span class="notification-length">{{ observationNotValidated|length }}</span> observation(s) en attente
+            </span>
+            </div>
+        {% endif %}
+    {% endif %}
+
+<div class="container col-lg-8 col-sm-12 col-md-10" id="account-user-container">
+  <h2 id="account-user-title">Gestion de votre compte</h2>
+
+  <div role="tablist" id="accordion-1">
+
+    <div class="card">
+      <div class="card-header" role="tab">
+        <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="true" aria-controls="accordion-1 .item-1" href="#accordion-1 .item-1" class="account-user-text">Informations sur le compte</a></h5>
+      </div>
+      <div class="collapse show item-1" role="tabpanel" data-parent="#accordion-1">
+        <div class="card-body" id="account-user-informations">
+          <p class="account-user-text">{{ 'profile.show.username'|trans }}: {{ app.user.username }}</p>
+          <p class="account-user-text" >{{ 'profile.show.email'|trans }}: <span id="account-user-currentEmail">{{ app.user.email }}</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" role="tab">
+        <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-2" href="#accordion-1 .item-2" class="account-user-text">Modifier ses identifiants</a></h5>
+      </div>
+      <div class="collapse item-2" role="tabpanel" data-parent="#accordion-1" id="account-user-item-2">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <h3 id="account-user-title-email">Changer son e-mail</h3>
+                {{ form_start(formChangeEmail, { 'action': path('profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' ,'onSubmit':'return fonction()'} }) }}
+                <div class="form-group">
+                  <label for="currentEmail" id="afterErrorMessageEmail">E-mail actuel *</label>
+                  <input type="email" class="form-control" id="currentEmail">
+                </div>
+              <div class="form-group">
+                  {{ form_label(formChangeEmail.email,null,{'label_attr':{'class':'account-user-text'},'label':'Nouveau E-mail *'}) }}
+                  {{ form_widget(formChangeEmail.email, {'attr':{'class':'form-control'}}) }}
+                  {{ form_errors(formChangeEmail.email) }}
+              </div>
+                {{ form_row(formChangeEmail.update,{'attr':{'class':'btn btn-primary account-user-button'}}) }}
+                {{ form_end(formChangeEmail) }}
+            </div>
+            <div class="col-lg-6">
+              <h4 id="account-user-password-title">Changer son mot de passe</h4>
+                {{ form_start(formChangePassword, { 'action': path('profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+                <div class="form-group">
+                    {{ form_label(formChangePassword.current_password,null,{'label_attr':{'class':'account-user-text'},'label':'Mot de passe actuel *'}) }}
+                    {{ form_widget(formChangePassword.current_password,{'attr':{'class':'form-control'}}) }}
+                    {{ form_errors(formChangePassword.current_password) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(formChangePassword.plainPassword,null,{'label_attr':{'class':'account-user-text'},'label':'Nouveau mot de passe *'}) }}
+                    {{ form_widget(formChangePassword.plainPassword,{'attr':{'class':'form-control'}}) }}
+                    {{ form_errors(formChangePassword.plainPassword) }}
+                </div>
+                {{ form_row(formChangePassword.update,{'attr':{'class':'btn btn-primary account-user-button'}}) }}
+                {{ form_end(formChangePassword) }}
+            </div>
+          </div>
+      </div>
+    </div>
+    </div>
+    <div class="card">
+      <div class="card-header" role="tab">
+        <h5 class="mb-0"><a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-3" href="#accordion-1 .item-3" class="account-user-text">Informations personnelles</a></h5>
+      </div>
+      <div class="collapse item-3" role="tabpanel" data-parent="#accordion-1" id="account-user-item-3">
+        <div class="card-body" >
+            {{ form_start(formAddUser, { 'action': path('profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+
+              <div class="form-row col-md-10" >
+                <div class="col-lg-6 ">
+                  <div class="form-group">
+                      {{ form_label(formAddUser.name,null,{'label_attr':{'class':'account-user-text'},'label':'Nom *'}) }}
+                      {{ form_widget(formAddUser.name,{'attr':{'class':'form-control'}}) }}
+                      {{ form_errors(formAddUser.name) }}
+                  </div>
+                  <div class="form-group">
+                      {{ form_label(formAddUser.firstname,null,{'label_attr':{'class':'account-user-text'},'label':'Prénom *'}) }}
+                      {{ form_widget(formAddUser.firstname,{'attr':{'class':'form-control'}}) }}
+                      {{ form_errors(formAddUser.firstname) }}
+                  </div>
+                  <div class="form-group ">
+                      {{ form_label(formAddUser.profession,null,{'label_attr':{'class':'account-user-text'},'label':'Profession *'}) }}
+                      {{ form_widget(formAddUser.profession,{'attr':{'class':'form-control'}}) }}
+                      {{ form_errors(formAddUser.profession) }}
+                  </div>
+                  <div class="form-group">
+                      {{ form_label(formAddUser.birthday,null,{'label_attr':{'class':'account-user-text'},'label':'Date de Naissance *'}) }}<br/>
+                      {{ form_widget(formAddUser.birthday.day, {'attr': {
+                          'class': 'custom-select'
+                      }}) }}
+                      {{ form_widget(formAddUser.birthday.month, {'attr': {
+                          'class': 'custom-select'
+                      }}) }}
+                      {{ form_widget(formAddUser.birthday.year, {'attr': {
+                          'class': 'custom-select'
+                      }}) }}
+                      {{ form_errors(formAddUser.birthday) }}
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <div class="form-check" id="account-user-check">
+                        {{ form_widget(formAddUser.isnaturalist) }}
+                        {{ form_label(formAddUser.isnaturalist,null,{'label_attr':{'class':'form-check-label account-user-text'},'label':'Je suis naturaliste'}) }}
+                        {{ form_errors(formAddUser.isnaturalist) }}
+                        {% if is_granted('NATURALIST') %}
+                        {% else %}
+                            <img src="{{ asset('img/help-web-button.png') }}" id="account-user-interrogation">
+                        {% endif %}
+                    </div>
+                  </div>
+                  <div class="input-group">
+                      <label class="input-group-btn">
+                          <span class="btn btn-primary">
+                              <i class="material-icons">file_upload</i>
+                              {{ form_widget(formAddUser.picture.file, {'attr': {'style': 'display: none;'}}) }}
+                          </span>
+                      </label>
+                      <input type="text" class="form-control" style="height: 43.5px" readonly placeholder="Télécharger votre carte professionnelle (JPG/PNG)">
+                  </div>
+                    {{ form_errors(formAddUser.picture.file) }}
+                  <br/>
+
+                  <div>
+                      {{ form_row(formAddUser.save,{'attr':{'class':'btn btn-primary account-user-button'}}) }}
+                  </div>
+                </div>
+              </div>
+            {{ form_end(formAddUser) }}
+        </div>
+      </div>
+    </div>
+    {% if is_granted('ROLE_NATURALIST') %}
+      <div class="card">
+        <div class="card-header d-flex" role="tab">
+          <h5 class="mb-0">
+            <a data-toggle="collapse" aria-expanded="false" aria-controls="accordion-1 .item-4" href="#accordion-1 .item-4" class="account-user-text">
+              Observations en attente
+            </a>
+          </h5>
+          {% if observationNotValidated %}
+            <span id="badge-observation" class="badge badge-info ml-auto p-2">{{ observationNotValidated|length }}</span>
+          {% endif %}
+        </div>
+
+        <div class="collapse item-4" role="tabpanel" data-parent="#accordion-1">
+          <div class="card-body" id="account-user-standbyobservations">
+              {% if observationNotValidated %}
+                <table id="table-observation" class="table">
+                  <tbody>
+                  {% for observation in observationNotValidated %}
+                    <tr>
+                      <th class="img-obs" scope="row">
+                          {% if observation.picture %}
+                            <img class="image-observation" src="{{ asset('img/')}}{{ observation.picture.name }}" alt="{{ observation.picture.alt }}">
+                          {% else %}
+                            <img class="image-observation" src="{{ asset('img/default.gif')}}" alt="default">
+                          {% endif %}
+                      </th>
+                      <td>Observation de : <b>{{ observation.observation.users.username }}</b></td>
+                      <td class="obs-justify">{{ observation.observation.observationComment[:500] }}...</td>
+                      <td>{{ observation.observation.observationDate|date("d/m/Y") }}</td>
+                      <td>
+                        <a href="#" title="Valider" data-toggle="modal" data-target="#validateModalCenter" class="valid-observation" onclick="document.getElementById('modal-valid-obs').href='{{ path('observationValidate', {'id':observation.observation.id}) }}';">
+                          <i class="material-icons">done</i>
+                        </a>
+                        <br><br>
+                        <a href="#" title="Voir" data-toggle="modal" data-target=".editModal" class="voir-observation" onclick="runEditModal({{ observation.observation.id }});">
+                          <i class="material-icons">search</i>
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                  <div style="text-align: center;"><p>Aucune Observation en attente</p></div>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    <div class="card">
+      <div class="card-header" role="tab">
+        <h5 class="mb-0"><a  href="{{ path('fos_user_security_logout') }}" class="account-user-text">Se déconnecter<i class="material-icons" id="account-user-cross">clear</i></a></h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Validate -->
+<div class="modal fade" id="validateModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        Etes-vous sûr de vouloir valider cette observation ?
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="valid-observation" id="modal-valid-obs">
+          <i class="material-icons">done</i>
+        </a>
+        <a href="#" class="close-modal" data-dismiss="modal">
+          <i class="material-icons">close</i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modale -->
+<div class="modal fade editModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- Edit Form -->
+      <div id="formEdit"></div>
+    </div>
+  </div>
+</div>
+
+
+

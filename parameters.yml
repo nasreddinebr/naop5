@@ -1,0 +1,13 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: nao
+    database_user: root
+    database_password: '0000'
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: five-legend@outlook.fr
+    sender_name: pseudo
+    mailer_password: ali123baba456
+    secret: 063e39db7875ab26fdd1df8908a0c86a0933cda6

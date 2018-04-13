@@ -1,0 +1,84 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block bodyadmin %}
+    <h2 class="unread-comments">Liste des commentaires non lus</h2>
+
+    {% for message in app.session.flashbag.get('success') %}
+        <div id="flash-message"class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" id="articleTitle">Article</th>
+                <th scope="col">Auteur</th>
+                <th scope="col">Date</th>
+                <th scope="col">Contenu</th>
+                <th scope="col" class="commentAction">Actions</th>
+
+            </tr>
+        </thead>
+        <tbody >
+            {% if comments %}
+                {% for comment in comments %}
+                    <tr>
+                        <th scope="row">{{ comment.news.title }}</th>
+                        <td>{{ comment.author }}</td>
+                        <td>{{ comment.commentDate|date('d/m/Y') }}</td>
+                        {% if comment.content|length > 250 %}
+                            <td>{{ comment.content[:250] }}...</td>
+                        {% else %}
+                            <td>{{ comment.content }}</td>
+                        {% endif %}
+
+                        <td class="commentAction">
+                            <a href="#" class="btn btn-outline-primary circle view" data-toggle="modal" data-target="#comment_{{ comment.id }}" title="Voir">
+                                <i class="material-icons">visibility</i>
+                            </a>
+                            <a href="{{ path('comment_read', { 'id': comment.id }) }}" class="btn btn-outline-primary circle read" title="Marquer comme lu">
+                                <i class="material-icons">done</i>
+                            </a>
+                            <a href="{{ path('comment_delete', { 'id': comment.id }) }}" class="btn btn-outline-primary circle delete" title="Supprimer">
+                                <i class="material-icons">delete_forever</i>
+                            </a>
+
+                            <!-- Modal -->
+                            <div class="modal fade bd-example-modal-lg" id="comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Titre de l'article : "{{ comment.news.title }}"</h5>
+                                            <a href="#" data-dismiss="modal" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </a>
+                                        </div>
+                                        <div class="modal-body commentModalBody">
+                                            <p>Commentaire posté par: <strong>{{ comment.author }}</strong>. Le: {{ comment.commentDate|date("d/m/Y H:i") }}</p>
+                                            <hr>
+                                            <p>{{ comment.content }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="{{ path('comment_delete', { 'id': comment.id }) }}" class="btn btn-outline-primary circle delete" title="Supprimer">
+                                                <i class="material-icons">delete_forever</i>
+                                            </a>
+                                            <a href="{{ path('comment_read', { 'id': comment.id }) }}" class="btn btn-outline-primary circle read" title="Marquer comme lu">
+                                                <i class="material-icons">done</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4" id="noComment">Pas de nouveaux commentaires </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+{% endblock %}

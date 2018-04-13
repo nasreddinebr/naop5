@@ -1,0 +1,83 @@
+{# On utilise ici le layout général, qui se situe dans ce même CoreBundle maintenant #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    Page d'accueil - {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+    <body id="search_result">
+{% endblock %}
+
+{% block body %}
+    <!-- Search Bar -->
+    <div id="search" class="container-fluid">
+        {{ include('::search.html.twig') }}
+    </div>
+
+    <div id="gmap" class="col-12"></div>
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript">
+
+    function initMap() {
+
+        // Search
+        $("#termsearch").keyup(function () {
+            // Recovering data from the database whit AJAX
+            let termSearch = $(this).val();
+            termSearch = $.trim(termSearch);
+            callAjax("{{ path('search') }}", termSearch);
+        });
+
+        // Step 1: Get all the marker tag and variable declaration.
+        const markers = document.getElementsByTagName('marker');
+        const icon = {
+            label: 'O'
+        };
+        let point=[];
+        let iterator = 0;
+
+        // Step 2: Add a card from Google Maps API.
+        let latLng = {lat: 45.647863, lng: 0.184349};
+        let map = new google.maps.Map(document.getElementById('gmap'), {
+            zoom: 6,
+            center: latLng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        // Step 3: Add all markers with an animation.
+        for (i = 0; i < markers.length; i++) {
+            point.push({
+                idEvent: markers[i].getAttribute('id'),
+                lat: parseFloat(markers[i].getAttribute('lat')),
+                lng: parseFloat(markers[i].getAttribute('lng'))
+            });
+            setTimeout(addMarker,(i+1)*400);    // Add marker with animation
+        }
+
+        // Add markers function.
+        function addMarker() {
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(point[iterator].lat, point[iterator].lng),
+                map: map,
+                animation: google.maps.Animation.DROP,
+                label: icon.label
+            });
+            marker.idEvent = point[iterator].idEvent;
+            google.maps.event.addListener(marker,'click',function () {
+                let url = "{{ path('observation', {'id': 0}) }}";
+                url = url.replace(0, marker.idEvent);
+                document.location.href= url;
+            });
+            iterator++;
+        }
+
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKdMU3rD4Z3TsR_fvOxrRjVgKMkw4UNSc&callback=initMap"></script>
+{% endblock %}

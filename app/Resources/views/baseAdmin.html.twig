@@ -1,0 +1,75 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Dashboard {{ parent() }}
+{% endblock %}
+
+{% block bodyId %}
+    <body id="dashboard">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid" id="dashboard-container">
+    <div class="row">
+        <div class=" col-lg-3">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link" href="{{ path('admin_index') }}" >Gestion des utilisateurs<i class="material-icons ml-3">group</i></a>
+                <a class="nav-link" href="{{ path('news_index') }}"  >Gestion des articles<i class="material-icons ml-3">create</i></a>
+                <a class="nav-link" href="{{ path('unreadComments') }}">Espace Modérateur<i class="material-icons ml-3">mode_comment</i></a>
+                <hr>
+                <a href="{{ path('admin_new') }}" class="btn btn-primary">Nouvel utilisateur</a>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            {% block bodyadmin %}{% endblock %}
+        </div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ asset('/js/init.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/js/tinymce/tinymce.min.js') }}"></script>
+    <script>
+        tinymce.init({
+            selector: '#post_write_content',
+            height: 300,
+            menubar: false,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table contextmenu paste code'
+            ],
+            toolbar: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            content_css: [
+                '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                '//www.tinymce.com/css/codepen.min.css']
+        });
+
+        // We can attach the `fileselect` event to all file inputs on the page
+        $(document).on('change', ':file', function() {
+            let input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready( function() {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+
+                let input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+        });
+    </script>
+{% endblock %}
